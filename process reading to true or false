@@ -1,0 +1,28 @@
+var intervals = global.get('intervals')
+if (!intervals){
+    intervals = []
+}
+// intervals = []
+intervals.push(msg.payload)
+while (intervals.length >= 6){
+    var max = Math.max(...intervals)
+    var min = Math.min(...intervals)
+    var range = (max - min)
+    
+    if(range >= 20){
+        msg.payload = {"sensorid":2,"status":"True"}  
+        intervals = []
+        global.set('intervals', intervals)
+        return msg;
+    }
+    else{
+        msg.payload = {"sensorid":2,"status":"False"} 
+        intervals = []
+        global.set('intervals', intervals)
+        return msg;
+    }
+}
+global.set('intervals', intervals)
+
+// msg.payload = intervals
+// return msg; 

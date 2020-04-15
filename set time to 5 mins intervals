@@ -1,0 +1,21 @@
+var currentTime = new Date().getTime();
+if (!context.lastTime) {
+    context.lastTime = currentTime;
+    context.reading = 0;
+    context.count = 0;
+}
+if (currentTime-context.lastTime > 5000) {
+    // collates burst of 3 readiings
+    // 300000 = 5mins
+    context.reading = msg.payload.value;
+    context.sum += msg.payload.value;
+    context.count += 1;
+    if (context.count >= 5) {
+        // sends average of 3 readings
+        msg.payload.value = context.sum/context.count
+        context.count = 0
+        context.lastTime = currentTime - 3000;
+        return msg;
+    }
+    
+}

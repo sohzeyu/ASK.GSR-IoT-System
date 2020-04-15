@@ -1,0 +1,24 @@
+var sent = global.get('sent')
+if (!sent){
+    sent = "False"
+}
+currentTime = new Date().getTime();
+if (!context.lastTime) {
+    context.lastTime = currentTime;
+}
+sensor_readings = msg.payload
+
+if (!isNaN(sensor_readings)) {
+    context.lastTime = currentTime;
+}
+if (currentTime-context.lastTime > 5000 && sent == "False") {
+    global.set('sent', "True")
+    msg.payload = "False"    
+    return msg;
+}
+
+if (isNaN(sensor_readings)) {
+    msg.payload = "checking sensor"
+    // global.set('sent', "False")
+    return msg
+}
